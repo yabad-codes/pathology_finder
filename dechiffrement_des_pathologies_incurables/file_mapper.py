@@ -1,5 +1,4 @@
 import os
-import csv
 from .data_analyzer import analyze_file
 from .__var__ import *
 from fuzzywuzzy import fuzz
@@ -13,8 +12,8 @@ def is_tsv_file(file_path):
 	return file_extension.lower() == ".tsv"
 
 def user_prompt(pathology_name):
-	inp = input(f"Vouliez-vous dire {RED}{pathology_name}{RESET} ? (oui/non) > ")
-	return TRUE if inp == "oui" else CONTINUE
+	inp = input(f" * Did you mean {RED}{pathology_name}{RESET}? (yes/no) > ")
+	return TRUE if inp == "yes" else CONTINUE
 
 def correct_file(pathology_name, user_input):
 	ratio = fuzz.ratio(user_input.lower(), pathology_name.lower())
@@ -47,17 +46,16 @@ def	match_file(user_input, database_folder):
 	return (matching_file)
 
 def display_pathology(input):
-	print(f"\n╔════════════════╗")
-	print(f"║   Pathologie   ║  {WHITE}{input}{RESET}")
-	print(f"╚════════════════╝\n\n")
-	print(f"{GREEN}VERT\t: pour les SNPs les plus caractéristiques")
-	print(f"{YELLOW}JAUNE\t: pour les SNPs caractéristiques\n")
+	print(f"\n╔═════════════════╗")
+	print(f"║    Pathology    ║  {WHITE}{input}{RESET}")
+	print(f"╚═════════════════╝\n\n")
+	print(f"{GREEN}GREEN\t: indicates the most distinctive SNPs.")
+	print(f"{YELLOW}YELLOW\t: denotes notably characteristic SNPs, but to a lesser degree than green.{RESET}\n")
 
 def start_search(input, database_folder):
 	_file = match_file(input, database_folder)
 	if _file == None:
-		print(f"{RED}Erreur :")
-		print("        Veuillez assurer que le nom de la pathologie est correct.")
-		print(f"        - Les travaux sur cette pathologie sont en cours, prière d'essayer plus tard.{RESET}")
+		print(f"{RED}Error : Please ensure that the pathology name is correct.")
+		print(f"        * Work on this pathology is ongoing, please try again later.{RESET}")
 		return
 	analyze_file(_file)
