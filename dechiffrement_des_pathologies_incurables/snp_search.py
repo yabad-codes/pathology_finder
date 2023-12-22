@@ -3,14 +3,25 @@ from Bio import Entrez
 import xml.etree.ElementTree as ET
 import os, ssl
 from time import sleep
+import urllib.error
 import textwrap
 
 def get_ncbi_data(gene):
 	Entrez.email = "yabadwashere@gmail.com"
 
-	handle = Entrez.esearch(db="gene", term=f"{gene}[Gene Name] AND Homo sapiens[Organism]")
-	record = Entrez.read(handle)
-	handle.close()
+	try:
+		handle = Entrez.esearch(db="gene", term=f"{gene}[Gene Name] AND Homo sapiens[Organism]")
+		record = Entrez.read(handle)
+		handle.close()
+	except urllib.error.HTTPError as http_err:
+		print(f"{RED}A HTTP error occurred: {http_err}")
+		exit(1)
+	except urllib.error.URLError as url_err:
+		print(f"{RED}A URL error occurred: {url_err}")
+		exit(1)
+	except Exception as e:
+		print(f"{RED}An error occurred: {e}")
+		exit(1)
 
 	gene_ids = record["IdList"]
 
@@ -18,9 +29,19 @@ def get_ncbi_data(gene):
 		print(f"The gene \'{gene}\' was not found in the database. Please check the spelling or try a different gene name.")
 		return
 	
-	handle = Entrez.esummary(db="gene", id=",".join(gene_ids), rettype="gb", retmode="text")
-	gene_records = handle.read()
-	handle.close()
+	try:
+		handle = Entrez.esummary(db="gene", id=",".join(gene_ids), rettype="gb", retmode="text")
+		gene_records = handle.read()
+		handle.close()
+	except urllib.error.HTTPError as http_err:
+		print(f"{RED}A HTTP error occurred: {http_err}")
+		exit(1)
+	except urllib.error.URLError as url_err:
+		print(f"{RED}A URL error occurred: {url_err}")
+		exit(1)
+	except Exception as e:
+		print(f"{RED}An error occurred: {e}")
+		exit(1)
 	return (gene_records)
 
 def extract_summary(gene_info):
