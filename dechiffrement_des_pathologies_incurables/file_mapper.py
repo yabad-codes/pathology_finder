@@ -48,9 +48,7 @@ def	match_file(user_input, database_folder):
 def display_pathology(input):
 	print(f"\n╔═════════════════╗")
 	print(f"║    Pathology    ║  {WHITE}{input}{RESET}")
-	print(f"╚═════════════════╝\n\n")
-	print(f"{GREEN}GREEN\t: indicates the most distinctive SNPs.")
-	print(f"{YELLOW}YELLOW\t: denotes notably characteristic SNPs, but to a lesser degree than green.{RESET}\n")
+	print(f"╚═════════════════╝\n")
 
 def start_search(input, database_folder):
 	_file = match_file(input, database_folder)

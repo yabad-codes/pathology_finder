@@ -1,5 +1,7 @@
 Prerequesites :
 	- pip3 install fuzzywuzzy
+	- pip3 install biopython
+	- pip3 install prettytable
 	- pip3 install python-Levenshtein
 
 Run :
